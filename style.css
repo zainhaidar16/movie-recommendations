@@ -1,0 +1,78 @@
+/* styles.css */
+
+/* General Styling */
+body {
+    background-color: #f4f4f4; /* Light grey background for the whole page */
+}
+
+/* Header Colors */
+h1, h2, h3, h4, h5, h6 {
+    color: #007BFF; /* Bright blue for headings */
+}
+
+/* Sidebar Styling */
+.sidebar .sidebar-content {
+    background: linear-gradient(to bottom, #4e54c8, #8f94fb); /* Gradient background for sidebar */
+    color: #ffffff; /* White text color */
+}
+
+.sidebar .sidebar-content .sidebar__header {
+    color: #ffffff; /* White color for sidebar headers */
+}
+
+/* Title Colors */
+.main-title {
+    color: #007BFF; /* Bright blue for the main title */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.main-subtitle {
+    color: #0056b3; /* Darker blue for subtitles */
+    font-size: 1.5rem;
+}
+
+/* Movie Titles */
+.movie-title {
+    color: #0056b3; /* Darker blue for movie titles */
+    font-weight: bold;
+}
+
+/* Button Styling */
+.stButton {
+    background-color: #007BFF;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+.stButton:hover {
+    background-color: #0056b3;
+}
+
+/* Table Styling */
+.stTable {
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.stTable thead {
+    background-color: #007BFF;
+    color: #ffffff;
+}
+
+.stTable tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.stTable tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.stTable td, .stTable th {
+    padding: 10px;
+    text-align: left;
+}
