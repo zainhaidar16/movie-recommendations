@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import ast
 import json
 import requests
@@ -114,23 +115,6 @@ def get_movie_details(movie_title):
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
 
-# Function to display movie details
-def display_movie_details(movie_title):
-    movie_details = get_movie_details(movie_title)
-    
-    if movie_details and 'error' not in movie_details:
-        col1, col2 = st.columns([1, 2])
-        with col1:
-            st.image(get_movie_poster(movie_title))
-        with col2:
-            st.write(f"**Title**: {movie_details.get('title', 'N/A')}")
-            st.write(f"**Overview**: {movie_details.get('overview', 'N/A')}")
-            st.write(f"**Release Date**: {movie_details.get('release_date', 'N/A')}")
-            st.write(f"**Rating**: {movie_details.get('vote_average', 'N/A')}/10")
-            st.write(f"[Official Movie Link](https://www.themoviedb.org/movie/{movie_details.get('id', 'N/A')})")
-    else:
-        st.error("Movie details not found.")
-
 # Streamlit app
 st.title("🎬 Movie Recommendation System")
 
@@ -145,72 +129,88 @@ Use the options below to get started and enjoy your movie exploration experience
 # Add custom CSS for styling
 st.markdown("""
 <style>
+/* General body styling */
 body {
-    color: #333;
-    background-color: #f0f0f0;
+    color: #44403c;  /* stone-700 */
+    background-color: #fafaf9;  /* stone-50 */
 }
+
+/* Application container background */
 .stApp {
-    background-color: #f0f0f0;
+    background-color: #fafaf9;  /* stone-50 */
 }
+
+/* Header styling */
 header, .st-c0 {
-    background-color: #007BFF;
-    color: white;
+    background-color: #78716c;  /* stone-500 */
+    color: #fafaf9;  /* stone-50 */
 }
+
+/* Button styling */
 .stButton>button {
-    background-color: #007BFF;
-    color: white;
+    background-color: #78716c;  /* stone-500 */
+    color: #fafaf9;  /* stone-50 */
     border-radius: 4px;
 }
 .stButton>button:hover {
-    background-color: #0056b3;
+    background-color: #57534e;  /* stone-600 */
 }
+
+/* Input fields styling */
 .stSelectbox>div>div>input, .stTextInput>div>div>input {
-    background-color: #e9ecef;
+    background-color: #e7e5e4;  /* stone-200 */
 }
 .stSelectbox>div>div, .stTextInput>div>div {
     border-radius: 4px;
 }
+
+/* Labels styling */
 .stRadio>div>div>label, .stSelectbox>div>div>div>label {
-    color: #007BFF;
+    color: #44403c;  /* stone-700 */
 }
-.stText {
-    color: #333;
+
+/* Text and Markdown styling */
+.stText, .stMarkdown {
+    color: #44403c;  /* stone-700 */
 }
-.stMarkdown {
-    color: #333;
-}
+
+/* Sidebar styling */
 .sidebar .sidebar-content {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-    color: white;
+    background: linear-gradient(135deg, #78716c, #57534e);  /* stone-500 to stone-600 */
+    color: #fafaf9;  /* stone-50 */
 }
 .sidebar .sidebar-content .sidebar__header {
-    color: white;
+    color: #fafaf9;  /* stone-50 */
 }
+
+/* Headings styling */
 h1, h2, h3, h4, h5, h6 {
-    color: #007BFF;
+    color: #78716c;  /* stone-500 */
 }
-.stText>div, .stMarkdown>div {
-    color: #333;
-}
-.movie-title {
-    color: #0056b3;
+
+/* Movie titles styling */
+.movie_title {
+    color: #292524;  /* stone-800 */
     font-weight: bold;
+    font-size: 18px;  /* Adjust size as needed */
+}
+
+/* Selectbox and dropdown styling */
+.stSelectbox>div>div>label, .stSelectbox>div>div>div>label {
+    color: #44403c;  /* stone-700 */
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Main layout dropdown
-st.header("Main Menu")
-option = st.selectbox("Choose an option", ["Get Recommendation", "Filtered Movies"], key="main_option")
 
-if 'show_recommended_details' not in st.session_state:
-    st.session_state.show_recommended_details = False  # Initialize
+# Main layout options
+option = st.selectbox("Choose an option", ["Choose an option", "Get Recommendation", "Filtered Movies"])
 
 if option == "Get Recommendation":
-    st.header("🎬 Movie Recommendations")
+    st.header("Movie Recommendations")
 
     # Movie Selection and Recommendation
-    selected_movie = st.selectbox("Select a movie to get recommendations", movies_tags['title'].values)
+    selected_movie = st.selectbox("Select a movie to get recommendations", ["Choose a Movie"] + list(movies_tags['title'].values))
 
     if selected_movie != "Choose a Movie":
         if st.button("Recommend"):
@@ -221,27 +221,20 @@ if option == "Get Recommendation":
                 for i in range(len(recommended_movies)):
                     with cols[i % 5]:
                         st.image(recommended_posters[i], use_column_width=True)
-                        st.markdown(f"<div class='movie-title'>{recommended_movies[i]}</div>", unsafe_allow_html=True)
-                        if st.button(f"Show Details {i}", key=f"details_recommended_{i}"):
-                            st.session_state.selected_movie_details = recommended_movies[i]
-                            st.session_state.show_recommended_details = True
+                        st.text(recommended_movies[i])
             else:
                 st.error("No recommendations found. Try selecting a different movie.")
 
-# Display recommended movie details
-if 'selected_movie_details' in st.session_state and st.session_state.show_recommended_details:
-    st.header("📽️ Movie Details")
-    movie_title = st.session_state.selected_movie_details
-    display_movie_details(movie_title)
-    
-    # Reset the detail view
-    st.session_state.selected_movie_details = None
-    st.session_state.show_recommended_details = False
-
 elif option == "Filtered Movies":
     st.sidebar.title("Filter Options")
+    st.sidebar.markdown("""
+        <style>
+            .sidebar .sidebar-content {
+                background: linear-gradient(135deg, #f3f3f3, #e3e3e3);
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
-    # Sidebar options
     selected_year = st.sidebar.selectbox("Choose Year", ["Choose Year"] + sorted(movies_credits['release_date'].str[:4].unique(), reverse=True))
     selected_genre = st.sidebar.selectbox("Select a Genre", ["All"] + sorted(set(genre for sublist in movies_credits['genres'] for genre in sublist)))
     sort_by = st.sidebar.selectbox("Sort by", ["None", "Rating", "Box Office Collection"])
@@ -264,7 +257,7 @@ elif option == "Filtered Movies":
 
     # Apply search filter
     if search_query:
-        filtered_movies = filtered_movies[filtered_movies['title'].str.contains(search_query, case=False)]
+        filtered_movies = filtered_movies[filtered_movies['title'].str.contains(search_query, case=False, na=False)]
 
     # Apply sort filter
     if sort_by == "Rating":
@@ -272,30 +265,43 @@ elif option == "Filtered Movies":
     elif sort_by == "Box Office Collection":
         filtered_movies = filtered_movies.sort_values(by='revenue', ascending=False)
 
-    # Limit to top 15 movies based on Box Office Collection
-    filtered_movies = filtered_movies.head(15)
-
     # Display filtered movies
     if not filtered_movies.empty:
-        st.header("🎥 Filtered Movies")
+        st.header("Filtered Movies")
+        filtered_movies = filtered_movies.head(15)
         cols = st.columns(5)
-        for index, row in filtered_movies.iterrows():
-            with cols[index % 5]:
-                st.image(get_movie_poster(row['title']), use_column_width=True)
-                st.markdown(f"<div class='movie-title'>{row['title']}</div>", unsafe_allow_html=True)
+        for i, (_, movie) in enumerate(filtered_movies.iterrows()):
+            with cols[i % 5]:
+                st.image(get_movie_poster(movie['title']), use_column_width=True)
+                st.text(movie['title'])
+                st.write(f"**Release Date**: {movie['release_date']}")
+                st.write(f"**Rating**: {movie['vote_average']}/10")
                 
-                if st.button(f"Show Details {index}", key=f"details_filtered_{index}"):
-                    st.session_state.selected_movie_details = row['title']
-                    st.session_state.show_recommended_details = True
+                if st.button(f"Show Details {i}", key=f"details_filtered_{i}"):
+                    st.session_state.selected_movie_details = movie['title']
+                    st.session_state.show_details = True
     else:
         st.write("Use the filters from the sidebar to see movies.")
 
-# Display movie details if selected
-if 'selected_movie_details' in st.session_state and st.session_state.show_recommended_details:
-    st.header("📽️ Movie Details")
+# Show movie details if selected
+if 'selected_movie_details' in st.session_state and st.session_state.show_details:
+    st.header("Movie Details")
     movie_title = st.session_state.selected_movie_details
-    display_movie_details(movie_title)
+    movie_details = get_movie_details(movie_title)
+    
+    if movie_details and 'error' not in movie_details:
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            st.image(get_movie_poster(movie_title))
+        with col2:
+            st.write(f"**Title**: {movie_details.get('title', 'N/A')}")
+            st.write(f"**Overview**: {movie_details.get('overview', 'N/A')}")
+            st.write(f"**Release Date**: {movie_details.get('release_date', 'N/A')}")
+            st.write(f"**Rating**: {movie_details.get('vote_average', 'N/A')}/10")
+            st.write(f"[Official Movie Link](https://www.themoviedb.org/movie/{movie_details.get('id', 'N/A')})")
+    else:
+        st.error("Movie details not found.")
     
     # Reset the detail view
-    st.session_state.show_recommended_details = False
     st.session_state.selected_movie_details = None
+    st.session_state.show_details = False
