@@ -126,7 +126,7 @@ You can explore recommendations based on a selected movie or filter movies by va
 Use the options below to get started and enjoy your movie exploration experience!
 """)
 
-# Add custom CSS for styling
+# Add custom CSS for styling and footer
 st.markdown("""
 <style>
 /* General body styling */
@@ -189,17 +189,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Movie titles styling */
-.movie_title {
+.movie-title {
     color: #292524;  /* stone-800 */
     font-weight: bold;
     font-size: 18px;  /* Adjust size as needed */
 }
 
-/* Selectbox and dropdown styling */
-.stSelectbox>div>div>label, .stSelectbox>div>div>div>label {
-    color: #44403c;  /* stone-700 */
-}
-</style>
 """, unsafe_allow_html=True)
 
 
@@ -305,3 +300,39 @@ if 'selected_movie_details' in st.session_state and st.session_state.show_detail
     # Reset the detail view
     st.session_state.selected_movie_details = None
     st.session_state.show_details = False
+
+# Add custom CSS for styling and footer
+st.markdown("""
+<style>
+footer {visibility: hidden;}
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #78716c; /* stone-500 */
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #fafaf9; /* stone-50 */
+}
+
+.footer a {
+    color: #60a5fa; /* blue-400 */
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    color: #93c5fd; /* blue-300 */
+}
+</style>
+<div class="footer">
+    <p>Developed with ❤️ by <a href="https://zaintheanalyst.com" target="_blank">Zain Haidar</a></p>
+    <p>
+        <a href="https://github.com/zainhaidar16" target="_blank">GitHub</a> |
+        <a href="https://www.linkedin.com/in/zain-haidar/" target="_blank">LinkedIn</a> |
+        <a href="mailto:contact@zaintheanalyst.com" target="_blank">Email</a>
+    </p>
+</div>
+""", unsafe_allow_html=True)
