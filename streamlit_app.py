@@ -131,34 +131,35 @@ st.markdown("""
 <style>
 /* General body styling */
 body {
-    color: #44403c;  /* stone-700 */
-    background-color: #fafaf9;  /* stone-50 */
+    color: #fafaf9;  /* stone-50 for light text */
+    background-color: #1c1917;  /* stone-900 for dark background */
 }
 
 /* Application container background */
 .stApp {
-    background-color: #fafaf9;  /* stone-50 */
+    background-color: #1c1917;  /* stone-900 for dark background */
 }
 
 /* Header styling */
 header, .st-c0 {
-    background-color: #78716c;  /* stone-500 */
-    color: #fafaf9;  /* stone-50 */
+    background-color: #44403c;  /* stone-700 for dark header */
+    color: #fafaf9;  /* stone-50 for light text */
 }
 
 /* Button styling */
 .stButton>button {
-    background-color: #78716c;  /* stone-500 */
-    color: #fafaf9;  /* stone-50 */
+    background-color: #44403c;  /* stone-700 for dark buttons */
+    color: #fafaf9;  /* stone-50 for light text */
     border-radius: 4px;
 }
 .stButton>button:hover {
-    background-color: #57534e;  /* stone-600 */
+    background-color: #292524;  /* stone-800 for darker button on hover */
 }
 
 /* Input fields styling */
 .stSelectbox>div>div>input, .stTextInput>div>div>input {
-    background-color: #e7e5e4;  /* stone-200 */
+    background-color: #57534e;  /* stone-600 for input fields */
+    color: #fafaf9;  /* stone-50 for light text */
 }
 .stSelectbox>div>div, .stTextInput>div>div {
     border-radius: 4px;
@@ -166,35 +167,66 @@ header, .st-c0 {
 
 /* Labels styling */
 .stRadio>div>div>label, .stSelectbox>div>div>div>label {
-    color: #44403c;  /* stone-700 */
+    color: #fafaf9;  /* stone-50 for light labels */
 }
 
 /* Text and Markdown styling */
 .stText, .stMarkdown {
-    color: #44403c;  /* stone-700 */
+    color: #fafaf9;  /* stone-50 for light text */
 }
 
 /* Sidebar styling */
 .sidebar .sidebar-content {
-    background: linear-gradient(135deg, #78716c, #57534e);  /* stone-500 to stone-600 */
-    color: #fafaf9;  /* stone-50 */
+    background: linear-gradient(135deg, #44403c, #292524);  /* stone-700 to stone-800 for dark sidebar */
+    color: #fafaf9;  /* stone-50 for light text */
 }
 .sidebar .sidebar-content .sidebar__header {
-    color: #fafaf9;  /* stone-50 */
+    color: #fafaf9;  /* stone-50 for light header text */
 }
 
 /* Headings styling */
 h1, h2, h3, h4, h5, h6 {
-    color: #78716c;  /* stone-500 */
+    color: #fafaf9;  /* stone-50 for light headings */
 }
 
 /* Movie titles styling */
 .movie-title {
-    color: #292524;  /* stone-800 */
+    color: #fafaf9;  /* stone-50 for light movie titles */
     font-weight: bold;
     font-size: 18px;  /* Adjust size as needed */
 }
 
+/* Footer styling */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #44403c;  /* stone-700 for dark footer */
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #fafaf9;  /* stone-50 for light text */
+}
+
+.footer a {
+    color: #60a5fa;  /* blue-400 for links */
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    color: #93c5fd;  /* blue-300 for link hover effect */
+}
+</style>
+<div class="footer">
+    <p>Developed with ❤️ by <a href="https://zaintheanalyst.com" target="_blank">Zain Haidar</a></p>
+    <p>
+        <a href="https://github.com/zainhaidar16" target="_blank">GitHub</a> |
+        <a href="https://www.linkedin.com/in/zain-haidar/" target="_blank">LinkedIn</a> |
+        <a href="mailto:contact@zaintheanalyst.com" target="_blank">Email</a>
+    </p>
+</div>
 """, unsafe_allow_html=True)
 
 
@@ -301,38 +333,3 @@ if 'selected_movie_details' in st.session_state and st.session_state.show_detail
     st.session_state.selected_movie_details = None
     st.session_state.show_details = False
 
-# Add custom CSS for styling and footer
-st.markdown("""
-<style>
-footer {visibility: hidden;}
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #78716c; /* stone-500 */
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-    color: #fafaf9; /* stone-50 */
-}
-
-.footer a {
-    color: #60a5fa; /* blue-400 */
-    text-decoration: none;
-    margin: 0 10px;
-}
-
-.footer a:hover {
-    color: #93c5fd; /* blue-300 */
-}
-</style>
-<div class="footer">
-    <p>Developed with ❤️ by <a href="https://zaintheanalyst.com" target="_blank">Zain Haidar</a></p>
-    <p>
-        <a href="https://github.com/zainhaidar16" target="_blank">GitHub</a> |
-        <a href="https://www.linkedin.com/in/zain-haidar/" target="_blank">LinkedIn</a> |
-        <a href="mailto:contact@zaintheanalyst.com" target="_blank">Email</a>
-    </p>
-</div>
-""", unsafe_allow_html=True)
